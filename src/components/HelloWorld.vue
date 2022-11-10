@@ -94,29 +94,29 @@
   </h1>
   <div>
     <h2>
-      <button class="mainButton" @click="incrementCount">Click here</button>
+      <button class="baseButton mainButton" @click="incrementCount">Click here</button>
       <span class="totalCount">{{ count }}</span>
     </h2>
     <div>
     </div>
     <div>
-      <button class="buyButton" @click="incrementAutoClicker">Auto Clicker (cost: {{ autoClickerCost() }})</button>
-      count: {{ autoClicker }}
+      <button class="baseButton buyButton" @click="incrementAutoClicker">Auto Clicker (cost: {{ autoClickerCost() }})</button>
+      <span class="clicker">count: {{ autoClicker }}</span>
     </div>
     <div>
-      <button class="buyButton" @click="incrementFasterClicker">Faster Clicker (cost: {{ fasterClickerCost() }})</button>
-      count: {{ fasterClicker }}
+      <button class="baseButton buyButton" @click="incrementFasterClicker">Faster Clicker (cost: {{ fasterClickerCost() }})</button>
+      <span class="clicker">count: {{ fasterClicker }}</span>
     </div>
     <div>
-      <button class="buyButton" @click="incrementFastestClicker">Fastest Clicker (cost: {{ fastestClickerCost() }})</button>
-      count: {{ fastestClicker }}
+      <button class="baseButton buyButton" @click="incrementFastestClicker">Fastest Clicker (cost: {{ fastestClickerCost() }})</button>
+      <span class="clicker">count: {{ fastestClicker }}</span>
     </div>
     <div>
-      <button class="upgradeButton" @click="incrementMultiplier">Multiplier (cost: {{ multiplierCost() }})</button>
-      count: {{ multiplier }}
+      <button class="baseButton upgradeButton" @click="incrementMultiplier">Multiplier (cost: {{ multiplierCost() }})</button>
+      <span class="clicker">count: {{ multiplier }}</span>
     </div>
     <div v-if="count > prestigeCost">
-      <button @click="prestige">PRESTIGE</button>
+      <button class="baseButton mainButton" @click="prestige">PRESTIGE</button>
     </div>
   </div>
 </template>
@@ -127,23 +127,28 @@ h1 {
   font-size: 2.6rem;
   top: -10px;
 }
-.buyButton {
-  background-color: #6ff36d;
+
+.baseButton {
   border-radius: .5rem;
   padding: 1rem;
   margin-top: 0.5rem;
+  min-width: 15rem;
 }
 
+.buyButton {
+  background-color: #6ff36d;
+}
+
+.clicker {
+  display: inline;
+  padding-left: 1rem;
+  text-align: center;
+}
 .mainButton {
-  border-radius: .5rem;
-  padding: 1rem;
 }
 
 .upgradeButton {
   background-color: #f6f21e;
-  border-radius: .5rem;
-  padding: 1rem;
-  margin-top: 0.5rem;
 }
 .totalCount {
   margin: 1rem;
