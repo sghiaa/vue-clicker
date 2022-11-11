@@ -116,6 +116,12 @@
       <button class="baseButton mainButton" @click="prestige">PRESTIGE</button>
     </div>
   </div>
+  <div>
+    <img alt="Water droplet" class="" src="@/assets/water-droplet.jpg" width="125" height="125" />
+    <img alt="Lightning strike" class="" src="@/assets/lightning-strike.jpg" width="125" height="125" />
+    <img alt="Dandylion" class="" src="@/assets/dandylion.jpg" width="125" height="125" />
+    <img alt="Tree" class="" src="@/assets/tree.jpg" width="125" height="125" />
+  </div>
 </template>
 
 <style scoped>
