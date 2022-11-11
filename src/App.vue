@@ -10,6 +10,7 @@ import VueClicker from "./components/VueClicker.vue";
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/store">Store</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
