@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import VueClicker from './components/VueClicker.vue'
+import { RouterLink, RouterView } from "vue-router";
+import VueClicker from "./components/VueClicker.vue";
 </script>
 
 <template>
