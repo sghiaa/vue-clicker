@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type VueClicker from '@/components/VueClicker.vue';
-
+import type VueClicker from "@/components/VueClicker.vue";
 </script>
 
 <template>
