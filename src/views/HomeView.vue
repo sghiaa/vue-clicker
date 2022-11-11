@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type HelloWorldVue from '@/components/HelloWorld.vue';
+import type VueClicker from '@/components/VueClicker.vue';
 
 </script>
 
 <template>
   <main>
-    <HelloWorldVue />
+    <VueClicker />
   </main>
 </template>

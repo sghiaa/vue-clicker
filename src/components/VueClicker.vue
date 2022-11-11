@@ -89,9 +89,6 @@
 </script>
 
 <template>
-  <h1>
-    Good game
-  </h1>
   <div>
     <h2>
       <button class="baseButton mainButton" @click="incrementCount">Click here</button>
