@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
 
-// See here how to get started:
-// https://playwright.dev/docs/intro
 test("visits the app root url", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("div.greetings > h1")).toHaveText("You did it!");
+  await new Promise(resolve => setTimeout(resolve, 2000)); // Just to give you a chance to see that it's actually loading
+  await expect(page.locator("button.mainButton")).toHaveText("Click here");
 });
