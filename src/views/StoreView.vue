@@ -1,9 +1,12 @@
+<script setup lang="ts">
+import type UnitStore from "@/components/UnitStore.vue";
+</script>
+
 <template>
   <div class="about">
     <h1>Buy Clickers</h1>
     <div>
-      <!-- <button class="baseButton buyButton" @click="incrementAutoClicker">Auto Clicker (cost: {{ autoClickerCost() }})</button>
-      <span class="clicker">count: {{ autoClicker }}</span> -->
+      <UnitStore />
     </div>
   </div>
 </template>

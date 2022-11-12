@@ -1,4 +1,8 @@
 <script lang="ts">
+import UnitButton from "./UnitButton.vue";
+import UnitStore from "./UnitStore.vue"
+import type { Product } from "./UnitStore.vue"
+
 export default {
   data() {
     return {
@@ -15,7 +19,31 @@ export default {
       multiplierExponent: 1.25,
       prestigeCost: 50000,
       prestigeExponent: 1.15,
+      clickers: [
+        {
+          id: 1,
+          name: "Auto Clicker",
+          cost: 10,
+          buyFunction: this.incrementAutoClicker,
+        },
+        {
+          id: 2,
+          name: "Faster Clicker",
+          cost: 100,
+          buyFunction: this.incrementFasterClicker,
+        },
+        {
+          id: 3,
+          name: "Fastest Clicker",
+          cost: 1000,
+          buyFunction: this.incrementFastestClicker,
+        },
+      ] as Array<Product>
     };
+  },
+  components: {
+    UnitButton,
+    UnitStore,
   },
   methods: {
     incrementCount() {
@@ -28,6 +56,7 @@ export default {
       if (this.count >= this.autoClickerCost()) {
         this.count -= this.autoClickerCost();
         this.autoClicker++;
+        this.clickers[0].cost = this.autoClickerCost();
       }
     },
     fasterClickerCost() {
@@ -37,6 +66,7 @@ export default {
       if (this.count >= this.fasterClickerCost()) {
         this.count -= this.fasterClickerCost();
         this.fasterClicker++;
+        this.clickers[1].cost = this.fasterClickerCost();
       }
     },
     fastestClickerCost() {
@@ -46,6 +76,7 @@ export default {
       if (this.count >= this.fastestClickerCost()) {
         this.count -= this.fastestClickerCost();
         this.fastestClicker++;
+        this.clickers[2].cost = this.fastestClickerCost();
       }
     },
     multiplierCost() {
@@ -102,23 +133,16 @@ export default {
       </button>
       <span class="totalCount">{{ count }}</span>
     </h2>
-    <div></div>
     <div>
-      <button class="baseButton buyButton" @click="incrementAutoClicker">
-        Auto Clicker (cost: {{ autoClickerCost() }})
-      </button>
+      <!-- <UnitButton :name="clickers.autoClicker.name" :cost=autoClickerCost() @click="incrementAutoClicker" /> -->
       <span class="clicker">count: {{ autoClicker }}</span>
     </div>
     <div>
-      <button class="baseButton buyButton" @click="incrementFasterClicker">
-        Faster Clicker (cost: {{ fasterClickerCost() }})
-      </button>
+      <!-- <UnitButton :name="clickers.fasterClicker.name" :cost=fasterClickerCost() @click="incrementFasterClicker" /> -->
       <span class="clicker">count: {{ fasterClicker }}</span>
     </div>
     <div>
-      <button class="baseButton buyButton" @click="incrementFastestClicker">
-        Fastest Clicker (cost: {{ fastestClickerCost() }})
-      </button>
+      <!-- <UnitButton :name="clickers.fastestClicker.name" :cost=fastestClickerCost() @click="incrementFastestClicker" /> -->
       <span class="clicker">count: {{ fastestClicker }}</span>
     </div>
     <div>
@@ -130,6 +154,7 @@ export default {
     <div v-if="count > prestigeCost">
       <button class="baseButton mainButton" @click="prestige">PRESTIGE</button>
     </div>
+    <UnitStore :products="clickers" />
   </div>
   <div class="countImage">
     <img
@@ -195,8 +220,7 @@ h1 {
   padding: 1rem;
   margin: 1rem;
 }
-.mainButton {
-}
+/* .mainButton { } */
 
 .upgradeButton {
   background-color: #f6f21e;
