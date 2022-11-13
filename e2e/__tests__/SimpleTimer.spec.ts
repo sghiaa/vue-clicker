@@ -1,5 +1,3 @@
-import exp from "constants";
-import { start } from "repl";
 import { describe, it, expect } from "vitest";
 import { SimpleTimer, sleep } from '../helpers/SimpleTimer';
 
@@ -43,10 +41,6 @@ describe("Simple Timer", () => {
   });
 
   describe.concurrent("Started Timer", () => {
-    it("template", async () => {
-      const startedTimer = new SimpleTimer(true);
-    });
-
     it("should be created in a started state", () => {
       const startedTimer = new SimpleTimer(true);
       expect(startedTimer.started).toBe(true);
