@@ -39,11 +39,13 @@ exports.VueClickerPage = class VueClickerPage {
   async visit() {
     await this.page.goto("/");
     await this.waitForLoading();
+    expect(await this.getCurrentSection()).toBe('Home');
   };
 
   async visitAbout() {
     await this.page.goto("/about");
     await this.waitForLoading();
+    expect(await this.getCurrentSection()).toBe('About');
     expect(this.aboutSection).toBeVisible();
   }
 

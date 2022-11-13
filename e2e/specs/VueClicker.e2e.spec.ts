@@ -30,9 +30,11 @@ test.describe("Vue Clicker", () => {
     const vueClickerPage = new VueClickerPage(page);
 
     await vueClickerPage.visit();
-    expect(await vueClickerPage.getCurrentSection()).toBe('Home');
+
     await vueClickerPage.navAboutSection();
-    console.log("Final stage...");
+    expect(await vueClickerPage.getAboutTitle()).toBe('About this projecct');
+    expect(await vueClickerPage.getAboutContent()).toBe('I wanted to learn vue.');
+
     await vueClickerPage.navHomeSection();
   });
 });
