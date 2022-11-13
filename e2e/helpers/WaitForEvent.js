@@ -1,11 +1,26 @@
 import { SimpleTimer, sleep } from '../helpers/SimpleTimer';
 
+const multiWaitDebug = false;
+const waitForDebug = false;
+
+const logMultiWaitDebug = (message) => {
+  if (multiWaitDebug) {
+    console.log(message);
+  }
+}
+
+const logWaitForDebug = (message) => {
+  if (waitForDebug) {
+    console.log(message);
+  }
+}
+
 const multiWait = async (events, timeoutSecondsParam) => {
   let timeoutSeconds;
   if (typeof timeoutSecondsParam !== 'undefined') {
     timeoutSeconds = timeoutSecondsParam;
   } else {
-    timeoutSeconds = 5 * 1000; // TODO: Link this to Playwright's config.expext.timeout
+    timeoutSeconds = 5; // TODO: Link this to Playwright's config.expext.timeout
   }
 
   let foundEvent = null;
@@ -49,7 +64,7 @@ const multiWait = async (events, timeoutSecondsParam) => {
 };
 
 const waitFor = async (eventFunction, options = {}) => {
-  let timeoutSeconds = 5 * 1000; // TODO: Link this to Playwright's config.expext.timeout
+  let timeoutSeconds = 5; // TODO: Link this to Playwright's config.expext.timeout
   if (options.timeoutSeconds) {
     timeoutSeconds = options.timeoutSeconds;
   }
@@ -60,19 +75,27 @@ const waitFor = async (eventFunction, options = {}) => {
 
   let success = false;
 
+  logWaitForDebug(`waitFor called on event [${description}] with a timeout of [${timeoutSeconds}] seconds.`);
+
   const timer = new SimpleTimer(true);
   while (timer.keepTrying(timeoutSeconds)) {
+    logWaitForDebug(`timer.tryCount = [${timer.tryCount}]`);
     if (await eventFunction()) {
+      logWaitForDebug('  - Function passed');
       success = true;
       break;
+    } else {
+      logWaitForDebug('  - Function failed');
     }
     await sleep(50);
   }
 
+  logWaitForDebug('We are no longer waiting.');
+
   if (!success) {
     throw new Error(`The event [${description}] did not occur after [${timer.tryCount}] polling iterations over [${timeoutSeconds}] seconds.`);
   }
-  console.log("waitFor succeeded and is returning control.");
+  logWaitForDebug('waitFor succeeded and is returning control.');
 };
 
 module.exports = {
