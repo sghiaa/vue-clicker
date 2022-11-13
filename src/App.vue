@@ -8,7 +8,7 @@ import VueClicker from "./components/VueClicker.vue";
     <div class="wrapper">
       <VueClicker />
 
-      <nav>
+      <nav data-test-id="navigationLinks">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>

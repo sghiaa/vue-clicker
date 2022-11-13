@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div class="about" data-test-id="aboutSection">
     <h1>About this projecct</h1>
     <div>I wanted to learn vue.</div>
   </div>

@@ -72,6 +72,7 @@ const waitFor = async (eventFunction, options = {}) => {
   if (!success) {
     throw new Error(`The event [${description}] did not occur after [${timer.tryCount}] polling iterations over [${timeoutSeconds}] seconds.`);
   }
+  console.log("waitFor succeeded and is returning control.");
 };
 
 module.exports = {

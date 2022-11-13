@@ -51,10 +51,10 @@ export default {
     multiplierCost() {
       return Math.ceil(
         50 *
-          Math.pow(
-            this.multiplierExponent,
-            this.multiplier - this.prestigeNumber
-          )
+        Math.pow(
+          this.multiplierExponent,
+          this.multiplier - this.prestigeNumber
+        )
       );
     },
     incrementMultiplier() {
@@ -97,73 +97,49 @@ export default {
 <template>
   <div>
     <h2>
-      <button class="baseButton mainButton" @click="incrementCount">
+      <button class="baseButton mainButton" @click="incrementCount" data-test-id="mainButton">
         Click here
       </button>
-      <span class="totalCount">{{ count }}</span>
+      <span class="totalCount" data-test-id="currentTotalScore">{{ count }}</span>
     </h2>
     <div></div>
     <div>
-      <button class="baseButton buyButton" @click="incrementAutoClicker">
+      <button class="baseButton buyButton" @click="incrementAutoClicker" data-test-id="autoClickerButton">
         Auto Clicker (cost: {{ autoClickerCost() }})
       </button>
-      <span class="clicker">count: {{ autoClicker }}</span>
+      <span class="clicker" data-test-id="autoClickerCount">count: {{ autoClicker }}</span>
     </div>
     <div>
-      <button class="baseButton buyButton" @click="incrementFasterClicker">
+      <button class="baseButton buyButton" @click="incrementFasterClicker" data-test-id="fasterClickerButton">
         Faster Clicker (cost: {{ fasterClickerCost() }})
       </button>
-      <span class="clicker">count: {{ fasterClicker }}</span>
+      <span class="clicker" data-test-id="fasterClickerCount">count: {{ fasterClicker }}</span>
     </div>
     <div>
-      <button class="baseButton buyButton" @click="incrementFastestClicker">
+      <button class="baseButton buyButton" @click="incrementFastestClicker" data-test-id="fastestClickerButton">
         Fastest Clicker (cost: {{ fastestClickerCost() }})
       </button>
-      <span class="clicker">count: {{ fastestClicker }}</span>
+      <span class="clicker" data-test-id="fastestClickerCount">count: {{ fastestClicker }}</span>
     </div>
     <div>
-      <button class="baseButton upgradeButton" @click="incrementMultiplier">
+      <button class="baseButton upgradeButton" @click="incrementMultiplier" data-test-id="multiplierButton">
         Multiplier (cost: {{ multiplierCost() }})
       </button>
-      <span class="clicker">count: {{ multiplier }}</span>
+      <span class="clicker" data-test-id="multiplierCount">count: {{ multiplier }}</span>
     </div>
     <div v-if="count > prestigeCost">
       <button class="baseButton mainButton" @click="prestige">PRESTIGE</button>
     </div>
   </div>
   <div class="countImage">
-    <img
-      v-if="count <= 1000"
-      alt="Water droplet"
-      class=""
-      src="@/assets/water-droplet.jpg"
-      width="125"
-      height="125"
-    />
-    <img
-      v-if="count > 1000 && count <= 10000"
-      alt="Lightning strike"
-      class=""
-      src="@/assets/lightning-strike.jpg"
-      width="125"
-      height="125"
-    />
-    <img
-      v-if="count > 10000 && count <= 100000"
-      alt="Dandylion"
-      class=""
-      src="@/assets/dandylion.jpg"
-      width="125"
-      height="125"
-    />
-    <img
-      v-if="count > 100000"
-      alt="Tree"
-      class=""
-      src="@/assets/tree.jpg"
-      width="125"
-      height="125"
-    />
+    <img v-if="count <= 1000" alt="Water droplet" class="" data-test-id="image0" src="@/assets/water-droplet.jpg"
+      width="125" height="125" />
+    <img v-if="count > 1000 && count <= 10000" alt="Lightning strike" class="" data-test-id="image1000"
+      src="@/assets/lightning-strike.jpg" width="125" height="125" />
+    <img v-if="count > 10000 && count <= 100000" alt="Dandylion" class="" data-test-id="image10000"
+      src="@/assets/dandylion.jpg" width="125" height="125" />
+    <img v-if="count > 100000" alt="Tree" class="" data-test-id="image100000" src="@/assets/tree.jpg" width="125"
+      height="125" />
   </div>
 </template>
 
@@ -195,12 +171,13 @@ h1 {
   padding: 1rem;
   margin: 1rem;
 }
-.mainButton {
-}
+
+.mainButton {}
 
 .upgradeButton {
   background-color: #f6f21e;
 }
+
 .totalCount {
   margin: 1rem;
   min-width: 10rem;
