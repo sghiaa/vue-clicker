@@ -30,19 +30,22 @@ export default {
       this.state.fastestClicker = 0;
       state.prestigeNumber++;
       this.state.multiplier = state.prestigeNumber;
+      this.state.fasterClickerMultiplier = state.prestigeNumber;
+      this.state.fastestClickerMultiplier = state.prestigeNumber;
+      this.state.autoClickerMultiplier = state.prestigeNumber;
       state.multiplierExponent = Math.max(state.multiplierExponent * 0.95, 1.01);
       this.prestigeCost = this.prestigeCost * this.prestigeExponent;
     },
   },
   mounted() {
     this.autoClickerInterval = setInterval(() => {
-      this.state.count += this.state.autoClicker;
+      this.state.count += this.state.autoClicker * this.state.autoClickerMultiplier;
     }, 1000);
     this.fasterClickerInterval = setInterval(() => {
-      this.state.count += this.state.fasterClicker;
+      this.state.count += this.state.fasterClicker * this.state.fasterClickerMultiplier;
     }, 100);
     this.fastestClickerInterval = setInterval(() => {
-      this.state.count += this.state.fastestClicker;
+      this.state.count += this.state.fastestClicker * this.state.fastestClickerMultiplier;
     }, 10);
   },
   beforeUnmount() {
@@ -64,12 +67,15 @@ export default {
     </h2>
     <div>
       <span class="clicker">Autoclickers: {{ state.autoClicker }}</span>
+      <span v-if="state.autoClickerMultiplier > 1"> x {{ state.autoClickerMultiplier}}</span>
     </div>
     <div>
       <span class="clicker">Faster clickers: {{ state.fasterClicker }}</span>
+      <span v-if="state.fasterClickerMultiplier > 1"> x {{ state.fasterClickerMultiplier }}</span>
     </div>
     <div>
       <span class="clicker">Fastest clickers: {{ state.fastestClicker }}</span>
+      <span v-if="state.fastestClickerMultiplier > 1"> x {{ state.fastestClickerMultiplier }}</span>
     </div>
     <div>
       <span class="clicker">Click Multiplier: {{ state.multiplier }}</span>
