@@ -2,9 +2,9 @@
 import UnitButton from "./UnitButton.vue";
 export interface Product {
     id: number,
-    cost: number,
+    cost: () => number,
     name: string,
-    buyFunction: () => {},
+    buyFunction: () => void,
 }
 export default {
   props: {
@@ -22,7 +22,7 @@ export default {
     <div v-for="product in products" :key="product.id">
       <UnitButton 
         :name="product.name" 
-        :cost="product.cost"
+        :cost="product.cost()"
         @click="product.buyFunction" 
       />
     </div> 

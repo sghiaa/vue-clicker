@@ -18,9 +18,14 @@ const router = createRouter({
       component: () => import("../views/AboutView.vue"),
     },
     {
-      path: "/store",
-      name: "store",
-      component: () => import("../views/StoreView.vue"),
+      path: "/clicker-store",
+      name: "clicker-store",
+      component: () => import("../views/ClickerStoreView.vue"),
+    },
+    {
+      path: "/upgrade-store",
+      name: "upgrade-store",
+      component: () => import("../views/UpgradeStoreView.vue"),
     },
   ],
 });
