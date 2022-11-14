@@ -17,6 +17,16 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/AboutView.vue"),
     },
+    {
+      path: "/clicker-store",
+      name: "clicker-store",
+      component: () => import("../views/ClickerStoreView.vue"),
+    },
+    {
+      path: "/upgrade-store",
+      name: "upgrade-store",
+      component: () => import("../views/UpgradeStoreView.vue"),
+    },
   ],
 });
 
