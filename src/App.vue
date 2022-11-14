@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
+import CountImage from "./components/CountImage.vue";
 import VueClicker from "./components/VueClicker.vue";
 </script>
 
 <template>
   <header>
     <div class="wrapper">
+      <CountImage />
       <VueClicker />
 
       <nav>
