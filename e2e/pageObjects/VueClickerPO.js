@@ -128,4 +128,16 @@ exports.VueClickerPage = class VueClickerPage {
   async getAboutContent() {
     return this.aboutSectionContent.textContent();
   }
+
+  async clickMainButton() {
+    await this.mainButton.click();
+  }
+
+  // This method assumes there are no auto-clickers or other influences on the score besides the click.
+  async clickMainButtonAndWait() {
+    const score = await this.getCurrentTotalScore();
+    const multiplier = await this.getMultiplierCount();
+    await this.clickMainButton();
+    await waitFor(async () => { return (await this.getCurrentTotalScore()) === (score + multiplier); });
+  }
 };
