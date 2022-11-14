@@ -18,12 +18,75 @@ const incrementMultiplier = () => {
     state.multiplier++;
   }
 };
-const clickers: Array<Product> = [
+const autoClickerMultiplierCost = () => {
+  return Math.ceil(
+    75 *
+    Math.pow(
+      1.5,
+      state.autoClickerMultiplier - state.prestigeNumber
+    )
+  );
+};
+const incrementAutoClickMultiplier = () => {
+  if (state.count >= autoClickerMultiplierCost()) {
+    state.count -= autoClickerMultiplierCost();
+    state.autoClickerMultiplier++;
+  }
+};
+const fasterClickerMultiplierCost = () => {
+  return Math.ceil(
+    500 *
+    Math.pow(
+      1.75,
+      state.fasterClickerMultiplier - state.prestigeNumber
+    )
+  );
+};
+const incrementFasterClickerMultiplier = () => {
+  if (state.count >= fasterClickerMultiplierCost()) {
+    state.count -= fasterClickerMultiplierCost();
+    state.fasterClickerMultiplier++;
+  }
+};
+const fastestClickerMultiplierCost = () => {
+  return Math.ceil(
+    5000 *
+    Math.pow(
+      2,
+      state.fastestClickerMultiplier - state.prestigeNumber
+    )
+  );
+};
+const incrementFastestClickerMultiplier = () => {
+  if (state.count >= fastestClickerMultiplierCost()) {
+    state.count -= fastestClickerMultiplierCost();
+    state.fastestClickerMultiplier++;
+  }
+};
+const upgrades: Array<Product> = [
   {
     id: 1,
-    name: "Multiplier",
+    name: "Manual Click Multiplier",
     cost: multiplierCost,
     buyFunction: incrementMultiplier,
+  },
+  {
+    id: 1,
+    name: "Auto Click Multiplier",
+    cost: autoClickerMultiplierCost,
+    buyFunction: incrementAutoClickMultiplier,
+  },
+  {
+    id: 1,
+    name: "Faster Click Multiplier",
+    cost: fasterClickerMultiplierCost,
+    buyFunction: incrementFasterClickerMultiplier,
+  },
+  {
+    id: 1,
+    name: "Fastest Click Multiplier",
+    cost: fastestClickerMultiplierCost,
+    buyFunction: incrementFastestClickerMultiplier,
   },
 ];
 
@@ -31,9 +94,9 @@ const clickers: Array<Product> = [
 
 <template>
   <div class="about">
-    <h1>Buy Clickers</h1>
+    <h1>Buy Upgrades</h1>
     <div>
-      <UnitStore :products="clickers"  />
+      <UnitStore :products="upgrades"  />
     </div>
   </div>
 </template>
