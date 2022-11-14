@@ -1,88 +1,48 @@
 <script lang="ts">
+import UnitButton from "./UnitButton.vue";
+import UnitStore from "./UnitStore.vue"
+import { state } from '../services/GameState'
+
 export default {
   data() {
     return {
+      state,
       moment: new Date().getTime(),
-      prestigeNumber: 1,
-      count: 0,
-      autoClicker: 0,
       autoClickerInterval: 0,
       fasterClickerInterval: 0,
       fastestClickerInterval: 0,
-      fasterClicker: 0,
-      fastestClicker: 0,
-      multiplier: 1,
-      multiplierExponent: 1.25,
       prestigeCost: 50000,
       prestigeExponent: 1.15,
     };
   },
+  components: {
+    UnitButton,
+    UnitStore,
+  },
   methods: {
     incrementCount() {
-      this.count += this.multiplier;
-    },
-    autoClickerCost() {
-      return Math.ceil(10 * Math.pow(1.05, this.autoClicker));
-    },
-    incrementAutoClicker() {
-      if (this.count >= this.autoClickerCost()) {
-        this.count -= this.autoClickerCost();
-        this.autoClicker++;
-      }
-    },
-    fasterClickerCost() {
-      return Math.ceil(100 * Math.pow(1.1, this.fasterClicker));
-    },
-    incrementFasterClicker() {
-      if (this.count >= this.fasterClickerCost()) {
-        this.count -= this.fasterClickerCost();
-        this.fasterClicker++;
-      }
-    },
-    fastestClickerCost() {
-      return Math.ceil(1000 * Math.pow(1.15, this.fastestClicker));
-    },
-    incrementFastestClicker() {
-      if (this.count >= this.fastestClickerCost()) {
-        this.count -= this.fastestClickerCost();
-        this.fastestClicker++;
-      }
-    },
-    multiplierCost() {
-      return Math.ceil(
-        50 *
-          Math.pow(
-            this.multiplierExponent,
-            this.multiplier - this.prestigeNumber
-          )
-      );
-    },
-    incrementMultiplier() {
-      if (this.count >= this.multiplierCost()) {
-        this.count -= this.multiplierCost();
-        this.multiplier++;
-      }
+      this.state.count += this.state.multiplier;
     },
     prestige() {
-      this.count = 0;
-      this.autoClicker = 0;
-      this.fasterClicker = 0;
-      this.fastestClicker = 0;
-      this.prestigeNumber++;
-      this.multiplier = this.prestigeNumber;
-      this.multiplierExponent = Math.max(this.multiplierExponent * 0.95, 1.01);
+      this.state.count = 0;
+      this.state.autoClicker = 0;
+      this.state.fasterClicker = 0;
+      this.state.fastestClicker = 0;
+      state.prestigeNumber++;
+      this.state.multiplier = state.prestigeNumber;
+      state.multiplierExponent = Math.max(state.multiplierExponent * 0.95, 1.01);
       this.prestigeCost = this.prestigeCost * this.prestigeExponent;
     },
   },
   mounted() {
     this.autoClickerInterval = setInterval(() => {
-      this.count += this.autoClicker;
+      this.state.count += this.state.autoClicker;
     }, 1000);
     this.fasterClickerInterval = setInterval(() => {
-      this.count += this.fasterClicker;
+      this.state.count += this.state.fasterClicker;
     }, 100);
     this.fastestClickerInterval = setInterval(() => {
-      this.count += this.fastestClicker;
+      this.state.count += this.state.fastestClicker;
     }, 10);
   },
   beforeUnmount() {
@@ -100,40 +60,27 @@ export default {
       <button class="baseButton mainButton" @click="incrementCount">
         Click here
       </button>
-      <span class="totalCount">{{ count }}</span>
+      <span class="totalCount">{{ state.count }}</span>
     </h2>
-    <div></div>
     <div>
-      <button class="baseButton buyButton" @click="incrementAutoClicker">
-        Auto Clicker (cost: {{ autoClickerCost() }})
-      </button>
-      <span class="clicker">count: {{ autoClicker }}</span>
+      <span class="clicker">Autoclickers: {{ state.autoClicker }}</span>
     </div>
     <div>
-      <button class="baseButton buyButton" @click="incrementFasterClicker">
-        Faster Clicker (cost: {{ fasterClickerCost() }})
-      </button>
-      <span class="clicker">count: {{ fasterClicker }}</span>
+      <span class="clicker">Faster clickers: {{ state.fasterClicker }}</span>
     </div>
     <div>
-      <button class="baseButton buyButton" @click="incrementFastestClicker">
-        Fastest Clicker (cost: {{ fastestClickerCost() }})
-      </button>
-      <span class="clicker">count: {{ fastestClicker }}</span>
+      <span class="clicker">Fastest clickers: {{ state.fastestClicker }}</span>
     </div>
     <div>
-      <button class="baseButton upgradeButton" @click="incrementMultiplier">
-        Multiplier (cost: {{ multiplierCost() }})
-      </button>
-      <span class="clicker">count: {{ multiplier }}</span>
+      <span class="clicker">Click Multiplier: {{ state.multiplier }}</span>
     </div>
-    <div v-if="count > prestigeCost">
+    <div v-if="state.count > prestigeCost">
       <button class="baseButton mainButton" @click="prestige">PRESTIGE</button>
     </div>
   </div>
   <div class="countImage">
     <img
-      v-if="count <= 1000"
+      v-if="state.count <= 1000"
       alt="Water droplet"
       class=""
       src="@/assets/water-droplet.jpg"
@@ -141,7 +88,7 @@ export default {
       height="125"
     />
     <img
-      v-if="count > 1000 && count <= 10000"
+      v-if="state.count > 1000 && state.count <= 10000"
       alt="Lightning strike"
       class=""
       src="@/assets/lightning-strike.jpg"
@@ -149,7 +96,7 @@ export default {
       height="125"
     />
     <img
-      v-if="count > 10000 && count <= 100000"
+      v-if="state.count > 10000 && state.count <= 100000"
       alt="Dandylion"
       class=""
       src="@/assets/dandylion.jpg"
@@ -157,7 +104,7 @@ export default {
       height="125"
     />
     <img
-      v-if="count > 100000"
+      v-if="state.count > 100000"
       alt="Tree"
       class=""
       src="@/assets/tree.jpg"
@@ -195,8 +142,7 @@ h1 {
   padding: 1rem;
   margin: 1rem;
 }
-.mainButton {
-}
+/* .mainButton { } */
 
 .upgradeButton {
   background-color: #f6f21e;
