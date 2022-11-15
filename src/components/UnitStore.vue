@@ -1,10 +1,10 @@
 <script lang="ts">
 import UnitButton from "./UnitButton.vue";
 export interface Product {
-    id: number,
-    cost: () => number,
-    name: string,
-    buyFunction: () => void,
+  id: number,
+  cost: () => number,
+  name: string,
+  buyFunction: () => void,
 }
 export default {
   props: {
@@ -20,14 +20,12 @@ export default {
 <template>
   <div>
     <div v-for="product in products" :key="product.id">
-      <UnitButton 
-        :name="product.name" 
-        :cost="product.cost()"
-        @click="product.buyFunction" 
-      />
-    </div> 
+      <UnitButton :name="product.name" :cost="product.cost()" :data-test-id="product.name"
+        @click="product.buyFunction" />
+    </div>
   </div>
 </template>
 
 <style scoped>
+
 </style>

@@ -6,20 +6,17 @@ exports.VueClickerPage = class VueClickerPage {
   constructor(page) {
     this.page = page;
 
-    this.mainButton = this.page.locator('data-test-id=mainButton');
-    this.autoClickerButton = this.page.locator('data-test-id=autoClickerButton');
-    this.fasterClickerButton = this.page.locator('data-test-id=fasterClickerButton');
-    this.fastestClickerButton = this.page.locator('data-test-id=fastestClickerButton');
-    this.multiplierButton = this.page.locator('data-test-id=multiplierButton');
+    this.countRegex = /.+: (\d+)/;
+    this.costRegex = /.*\(cost: (\d+)\).*/;
 
-    this.currentTotalScore = this.page.locator('data-test-id=currentTotalScore');
+    // Home
+    this.mainButton = this.page.locator('data-test-id=mainButton');
+    this.score = this.page.locator('data-test-id=score');
+
     this.autoClickerCount = this.page.locator('data-test-id=autoClickerCount');
     this.fasterClickerCount = this.page.locator('data-test-id=fasterClickerCount');
     this.fastestClickerCount = this.page.locator('data-test-id=fastestClickerCount');
     this.multiplierCount = this.page.locator('data-test-id=multiplierCount');
-
-    this.countRegex = /count: (\d+)/;
-    this.costRegex = /.*\(cost: (\d+)\).*/;
 
     this.currentScoreImage = this.page.locator('div.countImage img');
 
@@ -32,8 +29,21 @@ exports.VueClickerPage = class VueClickerPage {
     this.activeLink = this.page.locator('nav[data-test-id="navigationLinks"] a.router-link-active');
     this.homeNavLink = this.page.locator('nav[data-test-id="navigationLinks"] a:has-text("Home")');
     this.aboutNavLink = this.page.locator('nav[data-test-id="navigationLinks"] a:has-text("About")');
+    this.clickerStoreNavLink = this.page.locator('nav[data-test-id="navigationLinks"] a:has-text("Clicker Store")');
+    this.upgradeStoreNavLink = this.page.locator('nav[data-test-id="navigationLinks"] a:has-text("Upgrade Store")');
 
-    this.aboutSection = this.page.locator('data-test-id=aboutSection');
+    // Clicker Store
+    this.autoClickerButton = this.page.locator('data-test-id="Auto Clicker"');
+    this.fasterClickerButton = this.page.locator('data-test-id="Faster Clicker"');
+    this.fastestClickerButton = this.page.locator('data-test-id="Fastest Clicker"');
+
+    // Upgrade Store
+    this.manualMultiplierButton = this.page.locator('data-test-id="Manual Click Multiplier"');
+    this.autoMultiplierButton = this.page.locator('data-test-id="Auto Click Multiplier"');
+    this.fasterMultiplierButton = this.page.locator('data-test-id="Faster Click Multiplier"');
+    this.fastestMultiplierButton = this.page.locator('data-test-id="Fastest Click Multiplier"');
+
+    // About
     this.aboutSectionTitle = this.page.locator('div[data-test-id="aboutSection"] > h1');
     this.aboutSectionContent = this.page.locator('div[data-test-id="aboutSection"] > div');
   };
@@ -51,14 +61,28 @@ exports.VueClickerPage = class VueClickerPage {
     expect(this.aboutSection).toBeVisible();
   };
 
+  async visitClickerStore() {
+    await this.page.goto("/clicker-store");
+    await this.waitForLoading();
+    expect(await this.getCurrentSection()).toBe('Clicker Store');
+    expect(this.aboutSection).toBeVisible();
+  };
+
+  async visitUpgradeStore() {
+    await this.page.goto("/upgrade-store");
+    await this.waitForLoading();
+    expect(await this.getCurrentSection()).toBe('Upgrade Store');
+    expect(this.aboutSection).toBeVisible();
+  };
+
   async waitForLoading() {
     await expect(this.mainButton).toBeVisible();
     await expect(this.autoClickerButton).toBeVisible();
     await expect(this.fasterClickerButton).toBeVisible();
     await expect(this.fastestClickerButton).toBeVisible();
-    await expect(this.multiplierButton).toBeVisible();
+    await expect(this.manualMultiplierButton).toBeVisible();
 
-    await expect(this.currentTotalScore).toBeVisible();
+    await expect(this.score).toBeVisible();
     await expect(this.autoClickerCount).toBeVisible();
     await expect(this.fasterClickerCount).toBeVisible();
     await expect(this.fastestClickerCount).toBeVisible();
@@ -70,7 +94,7 @@ exports.VueClickerPage = class VueClickerPage {
   };
 
   async getScore() {
-    const score = Number(await this.currentTotalScore.textContent());
+    const score = Number(await this.score.textContent());
     return score;
   };
 
@@ -80,7 +104,10 @@ exports.VueClickerPage = class VueClickerPage {
     return Number(matches[1]);
   };
 
-  async getAutoClickerCost() {
+  async getAutoClickerCost(navToSection = true) {
+    if (navToSection) {
+      await this.navClickerStore();
+    }
     const autoClickerCostText = await this.autoClickerButton.textContent();
     const matches = autoClickerCostText.match(this.costRegex);
     return Number(matches[1]);
@@ -92,7 +119,10 @@ exports.VueClickerPage = class VueClickerPage {
     return Number(matches[1]);
   };
 
-  async getFasterClickerCost() {
+  async getFasterClickerCost(navToSection = true) {
+    if (navToSection) {
+      await this.navClickerStore();
+    }
     const fasterClickerCostText = await this.fasterClickerButton.textContent();
     const matches = fasterClickerCostText.match(this.costRegex);
     return Number(matches[1]);
@@ -104,7 +134,10 @@ exports.VueClickerPage = class VueClickerPage {
     return Number(matches[1]);
   };
 
-  async getFastestClickerCost() {
+  async getFastestClickerCost(navToSection = true) {
+    if (navToSection) {
+      await this.navClickerStore();
+    }
     const fastestClickerCostText = await this.fastestClickerButton.textContent();
     const matches = fastestClickerCostText.match(this.costRegex);
     return Number(matches[1]);
@@ -116,8 +149,8 @@ exports.VueClickerPage = class VueClickerPage {
     return Number(matches[1]);
   };
 
-  async getMultiplierCost() {
-    const multiplierCostText = await this.multiplierButton.textContent();
+  async getManualMultiplierCost() {
+    const multiplierCostText = await this.manualMultiplierButton.textContent();
     const matches = multiplierCostText.match(this.costRegex);
     return Number(matches[1]);
   };
@@ -143,10 +176,27 @@ exports.VueClickerPage = class VueClickerPage {
     await this.aboutNavLink.click();
     await this.waitForLoading();
     await waitFor(async () => { return (await this.getCurrentSection()) === 'About'; });
-    expect(this.aboutSection).toBeVisible();
     expect(this.aboutSectionTitle).toBeVisible();
     expect(this.aboutSectionContent).toBeVisible();
   };
+
+  async navClickerStore() {
+    await this.clickerStoreNavLink.click();
+    await this.waitForLoading();
+    await waitFor(async () => { return (await this.getCurrentSection()) === 'Clicker Store'; });
+    expect(this.autoClickerButton).toBeVisible();
+    expect(this.fasterClickerButton).toBeVisible();
+    expect(this.fastestClickerButton).toBeVisible();
+  }
+
+  async navUpgradeStore() {
+    await this.upgradeStoreNavLink.click();
+    await this.waitForLoading();
+    await waitFor(async () => { return (await this.getCurrentSection()) === 'Upgrade Store'; });
+    expect(this.autoClickerButton).toBeVisible();
+    expect(this.fasterClickerButton).toBeVisible();
+    expect(this.fastestClickerButton).toBeVisible();
+  }
 
   async getAboutTitle() {
     return this.aboutSectionTitle.textContent();
@@ -201,7 +251,10 @@ exports.VueClickerPage = class VueClickerPage {
     }
   };
 
-  async clickAutoClickerButton() {
+  async clickAutoClickerButton(navToSection = true) {
+    if (navToSection) {
+      await this.navClickerStore();
+    }
     const autoClickerCount = await this.getAutoClickerCount();
     await this.autoClickerButton.click();
     const clickResponses = {
@@ -211,7 +264,10 @@ exports.VueClickerPage = class VueClickerPage {
     return multiWait(clickResponses, 0.25);
   };
 
-  async clickFasterClickerButton() {
+  async clickFasterClickerButton(navToSection = true) {
+    if (navToSection) {
+      await this.navClickerStore();
+    }
     const fasterClickerCount = await this.getFasterClickerCount();
     await this.fasterClickerButton.click();
     const clickResponses = {
@@ -221,7 +277,10 @@ exports.VueClickerPage = class VueClickerPage {
     return multiWait(clickResponses, 0.25);
   };
 
-  async clickFastestClickerButton() {
+  async clickFastestClickerButton(navToSection = true) {
+    if (navToSection) {
+      await this.navClickerStore();
+    }
     const fastestClickerCount = await this.getFastestClickerCount();
     await this.fastestClickerButton.click();
     const clickResponses = {
@@ -231,9 +290,12 @@ exports.VueClickerPage = class VueClickerPage {
     return multiWait(clickResponses, 0.25);
   };
 
-  async clickMultiplierButton() {
+  async clickManualMultiplierButton(navToSection = true) {
+    if (navToSection) {
+      await this.navUpgradeStore();
+    }
     const multiplierCount = await this.getMultiplierCount();
-    await this.multiplierButton.click();
+    await this.manualMultiplierButton.click();
     const clickResponses = {
       "purchased": async () => { return (await this.getMultiplierCount()) === (multiplierCount + 1); },
       "no_sale": 'NOTHING'
@@ -253,7 +315,7 @@ exports.VueClickerPage = class VueClickerPage {
     const timer = new SimpleTimer(true);
     while (multiplierCount < targetMultiplier && timer.keepTrying(timeout)) {
       await this.clickUntilScore(multiplierCost);
-      expect(await this.clickMultiplierButton()).toBe('purchased');
+      expect(await this.clickManualMultiplierButton()).toBe('purchased');
       multiplierCount = await this.getMultiplierCount();
       multiplierCost = await this.getMultiplierCost();
     }
