@@ -1,5 +1,6 @@
 <script lang="ts">
 import UnitButton from "./UnitButton.vue";
+
 export interface Product {
     id: number,
     cost: () => number,
