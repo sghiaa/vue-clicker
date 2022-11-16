@@ -2,6 +2,7 @@
 import UnitButton from "./UnitButton.vue";
 import UnitStore from "./UnitStore.vue"
 import { state } from '../services/GameState'
+import { formatNumber } from "../services/Helpers"
 
 export default {
   data() {
@@ -23,6 +24,9 @@ export default {
     incrementCount() {
       this.state.count += this.state.multiplier;
     },
+    format(n: number): String {
+      return formatNumber(n)
+    },
     prestige() {
       this.state.count = 0;
       this.state.autoClicker = 0;
@@ -34,7 +38,7 @@ export default {
       this.state.fastestClickerMultiplier = state.prestigeNumber;
       this.state.autoClickerMultiplier = state.prestigeNumber;
       state.multiplierExponent = Math.max(state.multiplierExponent * 0.95, 1.01);
-      this.prestigeCost = this.prestigeCost * this.prestigeExponent;
+      this.prestigeCost = Math.ceil(this.prestigeCost * this.prestigeExponent);
     },
   },
   mounted() {
@@ -63,7 +67,7 @@ export default {
       <button class="baseButton mainButton" @click="incrementCount">
         Click here
       </button>
-      <span class="totalCount">{{ state.count }}</span>
+      <span class="totalCount">{{ format(state.count) }}</span>
     </h2>
     <div>
       <span class="clicker">Autoclickers: {{ state.autoClicker }}</span>
@@ -79,6 +83,9 @@ export default {
     </div>
     <div>
       <span class="clicker">Click Multiplier: {{ state.multiplier }}</span>
+    </div>
+    <div v-if="state.prestigeNumber > 1">
+      Prestige Cost: {{ format(prestigeCost) }}
     </div>
     <div v-if="state.count > prestigeCost">
       <button class="baseButton mainButton" @click="prestige">PRESTIGE</button>
