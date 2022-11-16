@@ -19,6 +19,7 @@ export default {
       src="@/assets/water-droplet.jpg"
       width="125"
       height="125"
+      data-test-id="image0"
     />
     <img
       v-if="state.count > 1000 && state.count <= 10000"
@@ -27,6 +28,7 @@ export default {
       src="@/assets/lightning-strike.jpg"
       width="125"
       height="125"
+      data-test-id="image1000"
     />
     <img
       v-if="state.count > 10000 && state.count <= 100000"
@@ -35,6 +37,7 @@ export default {
       src="@/assets/dandylion.jpg"
       width="125"
       height="125"
+      data-test-id="image10000"
     />
     <img
       v-if="state.count > 100000"
@@ -43,6 +46,7 @@ export default {
       src="@/assets/tree.jpg"
       width="125"
       height="125"
+      data-test-id="image100000"
     />
   </div>
 </template>

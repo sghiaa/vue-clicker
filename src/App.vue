@@ -10,7 +10,7 @@ import VueClicker from "./components/VueClicker.vue";
       <CountImage />
       <VueClicker />
 
-      <nav>
+      <nav data-test-id="navigationLinks">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/clicker-store">Clicker Store</RouterLink>
         <RouterLink to="/upgrade-store">Upgrade Store</RouterLink>
