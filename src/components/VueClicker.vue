@@ -34,11 +34,9 @@ export default {
       this.state.fastestClicker = 0;
       state.prestigeNumber++;
       this.state.multiplier = state.prestigeNumber;
-      this.state.fasterClickerMultiplier = state.prestigeNumber;
-      this.state.fastestClickerMultiplier = state.prestigeNumber;
-      this.state.autoClickerMultiplier = state.prestigeNumber;
       state.multiplierExponent = Math.max(state.multiplierExponent * 0.95, 1.01);
       this.prestigeCost = Math.ceil(this.prestigeCost * this.prestigeExponent);
+      this.state.souls++;
     },
   },
   mounted() {
@@ -68,6 +66,7 @@ export default {
         Click here
       </button>
       <span class="totalCount">{{ format(state.count) }}</span>
+      <span class="souls" v-if="state.prestigeNumber > 1">souls: {{ format(state.souls) }}</span>
     </h2>
     <div>
       <span class="clicker">Autoclickers: {{ state.autoClicker }}</span>
@@ -98,6 +97,10 @@ h1 {
   font-weight: 500;
   font-size: 2.6rem;
   top: -10px;
+}
+
+.totalCount {
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .baseButton {
