@@ -3,80 +3,76 @@ import type { Product } from "@/components/UnitStore.vue";
 import UnitStore from "@/components/UnitStore.vue";
 import { state } from '../services/GameState'
 
-const multiplierCost = () => {
-  return Math.ceil(
-    50 *
-    Math.pow(
-      state.multiplierExponent,
-      state.multiplier - state.prestigeNumber
-    )
-  );
-};
-const incrementMultiplier = () => {
-  if (state.count >= multiplierCost()) {
-    state.count -= multiplierCost();
-    state.multiplier++;
-  }
-};
 const autoClickerMultiplierCost = () => {
   return Math.ceil(
-    75 *
+    1 *
     Math.pow(
       1.5,
-      state.autoClickerMultiplier - state.prestigeNumber
+      state.autoClickerMultiplier - 1
     )
   );
 };
 const incrementAutoClickMultiplier = () => {
-  if (state.count >= autoClickerMultiplierCost()) {
-    state.count -= autoClickerMultiplierCost();
+  if (state.souls >= autoClickerMultiplierCost()) {
+    state.souls -= autoClickerMultiplierCost();
     state.autoClickerMultiplier++;
   }
 };
 const fasterClickerMultiplierCost = () => {
   return Math.ceil(
-    500 *
+    1 *
     Math.pow(
       1.75,
-      state.fasterClickerMultiplier - state.prestigeNumber
+      state.fasterClickerMultiplier - 1
     )
   );
 };
 const incrementFasterClickerMultiplier = () => {
-  if (state.count >= fasterClickerMultiplierCost()) {
-    state.count -= fasterClickerMultiplierCost();
+  if (state.souls >= fasterClickerMultiplierCost()) {
+    state.souls -= fasterClickerMultiplierCost();
     state.fasterClickerMultiplier++;
   }
 };
 const fastestClickerMultiplierCost = () => {
   return Math.ceil(
-    5000 *
+    1 *
     Math.pow(
       2,
-      state.fastestClickerMultiplier - state.prestigeNumber
+      state.fastestClickerMultiplier - 1
     )
   );
 };
 const incrementFastestClickerMultiplier = () => {
-  if (state.count >= fastestClickerMultiplierCost()) {
-    state.count -= fastestClickerMultiplierCost();
+  if (state.souls >= fastestClickerMultiplierCost()) {
+    state.souls -= fastestClickerMultiplierCost();
     state.fastestClickerMultiplier++;
   }
 };
 const upgrades: Array<Product> = [
   {
     id: 1,
-    name: "Manual Click Multiplier",
-    cost: multiplierCost,
-    buyFunction: incrementMultiplier,
+    name: "Autoclick Multiplier",
+    cost: autoClickerMultiplierCost,
+    buyFunction: incrementAutoClickMultiplier,
+  },
+  {
+    id: 2,
+    name: "Faster Click Multiplier",
+    cost: fasterClickerMultiplierCost,
+    buyFunction: incrementFasterClickerMultiplier,
+  },
+  {
+    id: 3,
+    name: "Fastest Click Multiplier",
+    cost: fastestClickerMultiplierCost,
+    buyFunction: incrementFastestClickerMultiplier,
   },
 ];
-
 </script>
 
 <template>
   <div class="about">
-    <h1>Buy Upgrades</h1>
+    <h1>Soul Upgrades</h1>
     <div>
       <UnitStore :products="upgrades"  />
     </div>

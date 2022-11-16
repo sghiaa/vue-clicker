@@ -27,6 +27,11 @@ const router = createRouter({
       name: "upgrade-store",
       component: () => import("../views/UpgradeStoreView.vue"),
     },
+    {
+      path: "/soul-store",
+      name: "soul-store",
+      component: () => import("../views/SoulStoreView.vue"),
+    },
   ],
 });
 
