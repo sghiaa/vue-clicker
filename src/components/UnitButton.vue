@@ -1,17 +1,26 @@
 <script lang="ts">
+import { formatNumber } from '../services/Helpers'
 export default {
   props:{
     cost: Number,
     name: String,
     buyFunction: () => {},
   },
+  methods: {
+    format(n: number | undefined) {
+      if(n === undefined) {
+        return "undefined"
+      }
+      return formatNumber(n);
+    }
+  }
 };
 </script>
 
 <template>
     <div>
       <button class="baseButton buyButton" @click="() => buyFunction">
-        <span>{{ name }} (cost: {{ cost }})</span>
+        <span>{{ name }} (cost: {{ format(cost) }})</span>
       </button>
     </div>
 </template>

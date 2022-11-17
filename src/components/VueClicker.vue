@@ -1,7 +1,8 @@
 <script lang="ts">
 import UnitButton from "./UnitButton.vue";
-import UnitStore from "./UnitStore.vue"
-import { state } from '../services/GameState'
+import UnitStore from "./UnitStore.vue";
+import { state } from "../services/GameState";
+import { formatNumber } from "../services/Helpers";
 
 export default {
   data() {
@@ -23,6 +24,9 @@ export default {
     incrementCount() {
       this.state.count += this.state.multiplier;
     },
+    format(n: number): String {
+      return formatNumber(n);
+    },
     prestige() {
       this.state.count = 0;
       this.state.autoClicker = 0;
@@ -30,22 +34,26 @@ export default {
       this.state.fastestClicker = 0;
       state.prestigeNumber++;
       this.state.multiplier = state.prestigeNumber;
-      this.state.fasterClickerMultiplier = state.prestigeNumber;
-      this.state.fastestClickerMultiplier = state.prestigeNumber;
-      this.state.autoClickerMultiplier = state.prestigeNumber;
-      state.multiplierExponent = Math.max(state.multiplierExponent * 0.95, 1.01);
-      this.prestigeCost = this.prestigeCost * this.prestigeExponent;
+      state.multiplierExponent = Math.max(
+        state.multiplierExponent * 0.95,
+        1.01
+      );
+      this.prestigeCost = Math.ceil(this.prestigeCost * this.prestigeExponent);
+      this.state.souls++;
     },
   },
   mounted() {
     this.autoClickerInterval = setInterval(() => {
-      this.state.count += this.state.autoClicker * this.state.autoClickerMultiplier;
+      this.state.count +=
+        this.state.autoClicker * this.state.autoClickerMultiplier;
     }, 1000);
     this.fasterClickerInterval = setInterval(() => {
-      this.state.count += this.state.fasterClicker * this.state.fasterClickerMultiplier;
+      this.state.count +=
+        this.state.fasterClicker * this.state.fasterClickerMultiplier;
     }, 100);
     this.fastestClickerInterval = setInterval(() => {
-      this.state.count += this.state.fastestClicker * this.state.fastestClickerMultiplier;
+      this.state.count +=
+        this.state.fastestClicker * this.state.fastestClickerMultiplier;
     }, 10);
   },
   beforeUnmount() {
@@ -60,25 +68,43 @@ export default {
 <template>
   <div>
     <h2>
-      <button class="baseButton mainButton" @click="incrementCount" data-test-id=mainButton>
+      <button
+        class="baseButton mainButton"
+        @click="incrementCount"
+        data-test-id="mainButton"
+      >
         Click here
       </button>
-      <span class="totalCount" data-test-id=score>{{ state.count }}</span>
+      <span class="totalCount">{{ format(state.count) }}</span>
+      <span class="souls" v-if="state.prestigeNumber > 1"
+        >souls: {{ format(state.souls) }}</span
+      >
     </h2>
     <div>
-      <span class="clicker" data-test-id=autoClickerCount>Autoclickers: {{ state.autoClicker }}</span>
-      <span v-if="state.autoClickerMultiplier > 1"> x {{ state.autoClickerMultiplier }}</span>
+      <span class="clicker">Autoclickers: {{ state.autoClicker }}</span>
+      <span v-if="state.autoClickerMultiplier > 1">
+        x {{ state.autoClickerMultiplier }}</span
+      >
     </div>
     <div>
-      <span class="clicker" data-test-id=fasterClickerCount>Faster clickers: {{ state.fasterClicker }}</span>
-      <span v-if="state.fasterClickerMultiplier > 1"> x {{ state.fasterClickerMultiplier }}</span>
+      <span class="clicker">Faster clickers: {{ state.fasterClicker }}</span>
+      <span v-if="state.fasterClickerMultiplier > 1">
+        x {{ state.fasterClickerMultiplier }}</span
+      >
     </div>
     <div>
-      <span class="clicker" data-test-id=fastestClickerCount>Fastest clickers: {{ state.fastestClicker }}</span>
-      <span v-if="state.fastestClickerMultiplier > 1"> x {{ state.fastestClickerMultiplier }}</span>
+      <span class="clicker">Fastest clickers: {{ state.fastestClicker }}</span>
+      <span v-if="state.fastestClickerMultiplier > 1">
+        x {{ state.fastestClickerMultiplier }}</span
+      >
     </div>
     <div>
-      <span class="clicker" data-test-id=multiplierCount>Click Multiplier: {{ state.multiplier }}</span>
+      <span class="clicker" data-test-id="clickMultiplierCount"
+        >Click Multiplier: {{ state.multiplier }}</span
+      >
+    </div>
+    <div v-if="state.prestigeNumber > 1">
+      Prestige Cost: {{ format(prestigeCost) }}
     </div>
     <div v-if="state.count > prestigeCost">
       <button class="baseButton mainButton" @click="prestige">PRESTIGE</button>
@@ -91,6 +117,10 @@ h1 {
   font-weight: 500;
   font-size: 2.6rem;
   top: -10px;
+}
+
+.totalCount {
+  font-family: "Courier New", Courier, monospace;
 }
 
 .baseButton {

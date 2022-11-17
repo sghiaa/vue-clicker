@@ -2,6 +2,7 @@ import { reactive } from 'vue'
 
 export const state = reactive({
   count: 0,
+  souls: 0,
   autoClicker: 0,
   fasterClicker: 0,
   fastestClicker: 0,
