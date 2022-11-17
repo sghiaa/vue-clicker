@@ -24,6 +24,7 @@ export default {
       <UnitButton 
         :name="product.name" 
         :cost="product.cost()"
+        :data-test-id="product.name"
         @click="product.buyFunction" 
       />
     </div> 

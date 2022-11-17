@@ -62,26 +62,26 @@ export default {
 <template>
   <div>
     <h2>
-      <button class="baseButton mainButton" @click="incrementCount">
+      <button class="baseButton mainButton" @click="incrementCount" data-test-id="mainButton">
         Click here
       </button>
       <span class="totalCount">{{ format(state.count) }}</span>
       <span class="souls" v-if="state.prestigeNumber > 1">souls: {{ format(state.souls) }}</span>
     </h2>
     <div>
-      <span class="clicker">Autoclickers: {{ state.autoClicker }}</span>
-      <span v-if="state.autoClickerMultiplier > 1"> x {{ state.autoClickerMultiplier}}</span>
+      <span class="clicker" data-test-id="autoClickerCount">Autoclickers: {{ state.autoClicker }}</span>
+      <span data-test-id="autoClickerMultiplier" v-if="state.autoClickerMultiplier > 1"> x {{ state.autoClickerMultiplier}}</span>
     </div>
     <div>
-      <span class="clicker">Faster clickers: {{ state.fasterClicker }}</span>
-      <span v-if="state.fasterClickerMultiplier > 1"> x {{ state.fasterClickerMultiplier }}</span>
+      <span class="clicker" data-test-id="fasterClickerCount">Faster clickers: {{ state.fasterClicker }}</span>
+      <span data-test-id="fasterClickerMultiplier" v-if="state.fasterClickerMultiplier > 1"> x {{ state.fasterClickerMultiplier }}</span>
     </div>
     <div>
-      <span class="clicker">Fastest clickers: {{ state.fastestClicker }}</span>
-      <span v-if="state.fastestClickerMultiplier > 1"> x {{ state.fastestClickerMultiplier }}</span>
+      <span class="clicker" data-test-id="fastestClickerCount">Fastest clickers: {{ state.fastestClicker }}</span>
+      <span data-test-id="fastestClickerMultiplier" v-if="state.fastestClickerMultiplier > 1"> x {{ state.fastestClickerMultiplier }}</span>
     </div>
     <div>
-      <span class="clicker">Click Multiplier: {{ state.multiplier }}</span>
+      <span class="clicker" data-test-id="clickMultiplierCount">Click Multiplier: {{ state.multiplier }}</span>
     </div>
     <div v-if="state.prestigeNumber > 1">
       Prestige Cost: {{ format(prestigeCost) }}
