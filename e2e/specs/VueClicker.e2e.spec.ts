@@ -70,7 +70,7 @@ test.describe("Vue Clicker", () => {
       await vueClickerPage.clickUntilScore(7);
     });
 
-    test("should not be able to purchase an Auto Clicker if the score is less than the cost", async ({
+    test.skip("should not be able to purchase an Auto Clicker if the score is less than the cost", async ({
       page,
     }) => {
       const vueClickerPage = new VueClickerPage(page);
