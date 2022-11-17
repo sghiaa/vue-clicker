@@ -8,7 +8,7 @@
     "test:unit": "vitest --environment jsdom --root src/",
     "test:e2e_cross_browser": "playwright test",
     "test:e2e_demo": "log=trace playwright test --headed",
-    "test:e2e_dev": "log=trace playwright test --project=chromium --headed './e2e/vue_clicker.spec.ts'",
+    "test:e2e_dev": "log=trace playwright test --project=chromium --headed './e2e/specs/VueClicker.e2e.spec.ts'",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
@@ -35,7 +35,7 @@
     "prettier": "^2.7.1",
     "typescript": "~4.7.4",
     "vite": "^3.1.8",
-    "vitest": "^0.24.3",
+    "vitest": "^0.24.5",
     "vue-tsc": "^1.0.8"
   }
 }

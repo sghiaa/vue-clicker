@@ -11,7 +11,7 @@ import { devices } from "@playwright/test";
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-  testDir: "./e2e",
+  testDir: "./e2e/specs",
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
@@ -41,6 +41,8 @@ const config: PlaywrightTestConfig = {
 
     /* Only on CI systems run the tests headless */
     headless: !!process.env.CI,
+
+    screenshot: "only-on-failure",
   },
 
   /* Configure projects for major browsers */
@@ -94,7 +96,7 @@ const config: PlaywrightTestConfig = {
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  // outputDir: 'test-results/',
+  outputDir: "test-results/",
 
   /* Run your local dev server before starting the tests */
   webServer: {
