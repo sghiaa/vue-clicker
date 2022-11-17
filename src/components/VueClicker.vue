@@ -81,20 +81,35 @@ export default {
       >
     </h2>
     <div>
-      <span class="clicker">Autoclickers: {{ state.autoClicker }}</span>
-      <span v-if="state.autoClickerMultiplier > 1">
+      <span class="clicker" data-test-id="autoClickerCount"
+        >Autoclickers: {{ state.autoClicker }}</span
+      >
+      <span
+        data-test-id="autoClickerMultiplier"
+        v-if="state.autoClickerMultiplier > 1"
+      >
         x {{ state.autoClickerMultiplier }}</span
       >
     </div>
     <div>
-      <span class="clicker">Faster clickers: {{ state.fasterClicker }}</span>
-      <span v-if="state.fasterClickerMultiplier > 1">
+      <span class="clicker" data-test-id="fasterClickerCount"
+        >Faster clickers: {{ state.fasterClicker }}</span
+      >
+      <span
+        data-test-id="fasterClickerMultiplier"
+        v-if="state.fasterClickerMultiplier > 1"
+      >
         x {{ state.fasterClickerMultiplier }}</span
       >
     </div>
     <div>
-      <span class="clicker">Fastest clickers: {{ state.fastestClicker }}</span>
-      <span v-if="state.fastestClickerMultiplier > 1">
+      <span class="clicker" data-test-id="fastestClickerCount"
+        >Fastest clickers: {{ state.fastestClicker }}</span
+      >
+      <span
+        data-test-id="fastestClickerMultiplier"
+        v-if="state.fastestClickerMultiplier > 1"
+      >
         x {{ state.fastestClickerMultiplier }}</span
       >
     </div>
