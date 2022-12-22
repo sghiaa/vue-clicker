@@ -1,73 +1,80 @@
-<script setup lang="ts">
+<script lang="ts">
 import type { Product } from "@/components/UnitStore.vue";
 import UnitStore from "@/components/UnitStore.vue";
-import { state } from '../services/GameState'
+import { useMainStore } from "@/services/GameState";
 
-const autoClickerMultiplierCost = () => {
-  return Math.ceil(
-    1 *
-    Math.pow(
-      1.5,
-      state.autoClickerMultiplier - 1
-    )
-  );
-};
-const incrementAutoClickMultiplier = () => {
-  if (state.souls >= autoClickerMultiplierCost()) {
-    state.souls -= autoClickerMultiplierCost();
-    state.autoClickerMultiplier++;
+export default {
+  setup() {
+    const main = useMainStore();
+
+    const autoClickerMultiplierCost = (amt: number) => {
+      return Math.ceil(
+        Math.pow(
+          1.5,
+          amt
+        )
+      );
+    };
+    const buyAutoClickMultiplier = () => {
+      if (main.souls >= autoClickerMultiplierCost(main.autoClickerMultiplier)) {
+        main.spendSouls(autoClickerMultiplierCost(main.autoClickerMultiplier))
+        main.autoClickerMultiplier++;
+      }
+    };
+    const fasterClickerMultiplierCost = (amt: number) => {
+      return Math.ceil(
+        Math.pow(
+          1.75,
+          amt
+        )
+      );
+    };
+    const buyFasterClickerMultiplier = () => {
+      if (main.souls >= fasterClickerMultiplierCost(main.autoClickerMultiplier)) {
+        main.spendSouls(fasterClickerMultiplierCost(main.autoClickerMultiplier))
+        main.autoClickerMultiplier++;
+      }
+    };
+    const fastestClickerMultiplierCost = (amt: number) => {
+      return Math.ceil(
+        1 *
+        Math.pow(
+          2,
+          amt
+        )
+      );
+    };
+    const buyFastestClickerMultiplier = () => {
+      if (main.souls >= fastestClickerMultiplierCost(main.fastestClickerMultiplier)) {
+        main.spendSouls(fastestClickerMultiplierCost(main.fastestClickerMultiplier))
+        main.autoClickerMultiplier++;
+      }
+    };
+    const upgrades: Array<Product> = [
+      {
+        id: 1,
+        name: "Autoclick Multiplier",
+        cost: () => autoClickerMultiplierCost(main.autoClickerMultiplier),
+        buyFunction: buyAutoClickMultiplier,
+      },
+      {
+        id: 2,
+        name: "Faster Click Multiplier",
+        cost: () => fasterClickerMultiplierCost(main.fasterClickerMultiplier),
+        buyFunction: buyFasterClickerMultiplier,
+      },
+      {
+        id: 3,
+        name: "Fastest Click Multiplier",
+        cost: () => fastestClickerMultiplierCost(main.fastestClickerMultiplier),
+        buyFunction: buyFastestClickerMultiplier,
+      },
+    ];
+    return {
+      upgrades: upgrades,
+    }
   }
-};
-const fasterClickerMultiplierCost = () => {
-  return Math.ceil(
-    1 *
-    Math.pow(
-      1.75,
-      state.fasterClickerMultiplier - 1
-    )
-  );
-};
-const incrementFasterClickerMultiplier = () => {
-  if (state.souls >= fasterClickerMultiplierCost()) {
-    state.souls -= fasterClickerMultiplierCost();
-    state.fasterClickerMultiplier++;
-  }
-};
-const fastestClickerMultiplierCost = () => {
-  return Math.ceil(
-    1 *
-    Math.pow(
-      2,
-      state.fastestClickerMultiplier - 1
-    )
-  );
-};
-const incrementFastestClickerMultiplier = () => {
-  if (state.souls >= fastestClickerMultiplierCost()) {
-    state.souls -= fastestClickerMultiplierCost();
-    state.fastestClickerMultiplier++;
-  }
-};
-const upgrades: Array<Product> = [
-  {
-    id: 1,
-    name: "Autoclick Multiplier",
-    cost: autoClickerMultiplierCost,
-    buyFunction: incrementAutoClickMultiplier,
-  },
-  {
-    id: 2,
-    name: "Faster Click Multiplier",
-    cost: fasterClickerMultiplierCost,
-    buyFunction: incrementFasterClickerMultiplier,
-  },
-  {
-    id: 3,
-    name: "Fastest Click Multiplier",
-    cost: fastestClickerMultiplierCost,
-    buyFunction: incrementFastestClickerMultiplier,
-  },
-];
+}
 </script>
 
 <template>

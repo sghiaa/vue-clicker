@@ -1,8 +1,23 @@
-<script setup lang="ts">
+<script lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import CountImage from "./components/CountImage.vue";
 import VueClicker from "./components/VueClicker.vue";
-import { state } from '@/services/GameState'
+import { useMainStore } from '@/services/GameState'
+
+export default {
+  setup() {
+    const main = useMainStore();
+    return {
+      prestigeNumber: main.prestigeNumber,
+    }
+  },
+  components: {
+    VueClicker,
+    CountImage,
+  }
+
+
+}
 </script>
 
 <template>
@@ -12,12 +27,15 @@ import { state } from '@/services/GameState'
         <CountImage />
       </div>
       <VueClicker />
+      <span>
+        prestige numbeR: {{ prestigeNumber }}
+      </span>
 
       <nav data-test-id="navigationLinks">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/clicker-store">Clicker Store</RouterLink>
         <RouterLink to="/upgrade-store">Upgrade Store</RouterLink>
-        <RouterLink v-if="state.prestigeNumber > 1" to="/soul-store">Soul Store</RouterLink>
+        <RouterLink v-if="prestigeNumber > 1" to="/soul-store">Soul Store</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
