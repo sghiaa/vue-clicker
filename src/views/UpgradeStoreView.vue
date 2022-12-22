@@ -1,76 +1,53 @@
-<script setup lang="ts">
+<script lang="ts">
 import type { Product } from "@/components/UnitStore.vue";
 import UnitStore from "@/components/UnitStore.vue";
-import { state } from '../services/GameState'
+import { useMainStore } from "@/services/GameState";
 
-const multiplierCost = () => {
-  return Math.ceil(
-    50 *
-    Math.pow(
-      state.multiplierExponent,
-      state.multiplier - state.prestigeNumber
-    )
-  );
-};
-const incrementMultiplier = () => {
-  if (state.count >= multiplierCost()) {
-    state.count -= multiplierCost();
-    state.multiplier++;
-  }
-};
-const autoClickerMultiplierCost = () => {
-  return Math.ceil(
-    75 *
-    Math.pow(
-      1.5,
-      state.autoClickerMultiplier - state.prestigeNumber
-    )
-  );
-};
-const incrementAutoClickMultiplier = () => {
-  if (state.count >= autoClickerMultiplierCost()) {
-    state.count -= autoClickerMultiplierCost();
-    state.autoClickerMultiplier++;
-  }
-};
-const fasterClickerMultiplierCost = () => {
-  return Math.ceil(
-    500 *
-    Math.pow(
-      1.75,
-      state.fasterClickerMultiplier - state.prestigeNumber
-    )
-  );
-};
-const incrementFasterClickerMultiplier = () => {
-  if (state.count >= fasterClickerMultiplierCost()) {
-    state.count -= fasterClickerMultiplierCost();
-    state.fasterClickerMultiplier++;
-  }
-};
-const fastestClickerMultiplierCost = () => {
-  return Math.ceil(
-    5000 *
-    Math.pow(
-      2,
-      state.fastestClickerMultiplier - state.prestigeNumber
-    )
-  );
-};
-const incrementFastestClickerMultiplier = () => {
-  if (state.count >= fastestClickerMultiplierCost()) {
-    state.count -= fastestClickerMultiplierCost();
-    state.fastestClickerMultiplier++;
-  }
-};
-const upgrades: Array<Product> = [
-  {
-    id: 1,
-    name: "Manual Click Multiplier",
-    cost: multiplierCost,
-    buyFunction: incrementMultiplier,
+export default {
+  setup() {
+    const main = useMainStore();
+    const multiplierCost = () => {
+      return Math.ceil(
+        50 *
+        Math.pow(
+          main.multiplierExponent,
+          main.multiplier - main.prestigeNumber
+        )
+      );
+    };
+    const incrementMultiplier = () => {
+      if (main.count >= multiplierCost()) {
+        main.spendCount(multiplierCost())
+        main.incrementMultiplier(1)
+      }
+    };
+    const autoClickerMultiplierCost = () => {
+      return Math.ceil(
+        75 *
+        Math.pow(
+          1.5,
+          main.autoClickerMultiplier - main.prestigeNumber
+        )
+      );
+    };
+    const upgrades: Array<Product> = [
+      {
+        id: 1,
+        name: "Manual Click Multiplier",
+        cost: multiplierCost,
+        buyFunction: incrementMultiplier,
+      },
+    ];
+
+    return {
+      upgrades
+    }
   },
-];
+  components: {
+    UnitStore
+  }
+}
+
 
 </script>
 

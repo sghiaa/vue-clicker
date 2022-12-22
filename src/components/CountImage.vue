@@ -1,10 +1,11 @@
 <script lang="ts">
-import { state } from '../services/GameState'
+import { useMainStore } from '@/services/GameState'
 
 export default {
-  data() {
+  setup() {
+    const main = useMainStore();
     return {
-      state,
+      count: main.count,
     }
   }
 }
@@ -13,7 +14,7 @@ export default {
 <template>
   <div class="countImage">
     <img
-      v-if="state.count <= 1000"
+      v-if="count <= 1000"
       alt="Water droplet"
       class=""
       src="@/assets/water-droplet.jpg"
@@ -22,7 +23,7 @@ export default {
       data-test-id="image0"
     />
     <img
-      v-if="state.count > 1000 && state.count <= 10000"
+      v-if="count > 1000 && count <= 10000"
       alt="Lightning strike"
       class=""
       src="@/assets/lightning-strike.jpg"
@@ -31,7 +32,7 @@ export default {
       data-test-id="image1000"
     />
     <img
-      v-if="state.count > 10000 && state.count <= 100000"
+      v-if="count > 10000 && count <= 100000"
       alt="Dandylion"
       class=""
       src="@/assets/dandylion.jpg"
@@ -40,7 +41,7 @@ export default {
       data-test-id="image10000"
     />
     <img
-      v-if="state.count > 100000"
+      v-if="count > 100000"
       alt="Tree"
       class=""
       src="@/assets/tree.jpg"

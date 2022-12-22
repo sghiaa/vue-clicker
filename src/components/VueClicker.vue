@@ -1,19 +1,58 @@
 <script lang="ts">
 import UnitButton from "./UnitButton.vue";
 import UnitStore from "./UnitStore.vue"
-import { state } from '../services/GameState'
+import { useMainStore } from '../services/GameState'
 import { formatNumber } from "../services/Helpers"
+import { computed } from "vue";
 
 export default {
+  setup() {
+    const main = useMainStore();
+    const clickIncrement = () => {
+      main.incrementCount(main.getMultiplier);
+    };
+    const autoClickIncrement = () => {
+      console.log("click")
+      main.incrementCount(main.getAutoClicker * main.getAutoClickerMultiplier);
+    };
+    const fasterClickIncrement = () => {
+      main.incrementCount(main.getAutoClicker * main.getAutoClickerMultiplier);
+    };
+    const fastestClickIncrement = () => {
+      main.incrementCount(main.getAutoClicker * main.getAutoClickerMultiplier);
+    };
+    const thisPrestige = () => {
+      main.prestige();
+    }
+    const hardReset = () => {
+      main.hardReset();
+    }
+    return {
+      clickIncrement,
+      autoClickIncrement,
+      fasterClickIncrement,
+      fastestClickIncrement,
+      thisPrestige,
+      hardReset,
+      count: computed(() => main.getCount),
+      autoClickers: computed(() => main.getAutoClicker),
+      autoClickerMultiplier: computed(() => main.getAutoClickerMultiplier),
+      fasterClickers: computed(() => main.getFasterClicker),
+      fasterClickerMultiplier: computed(() => main.getFasterClickerMultiplier),
+      fastestClickers: computed(() => main.getFastestClicker),
+      fastestClickerMultiplier: computed(() => main.getFastestClickerMultiplier),
+      multiplier: computed(() => main.getMultiplier),
+      souls: computed(() => main.getSouls),
+      prestigeNumber: computed(() => main.prestigeNumber),
+      prestigeCost: computed(() => main.prestigeCost),
+      
+    };
+  },
   data() {
     return {
-      state,
-      moment: new Date().getTime(),
       autoClickerInterval: 0,
       fasterClickerInterval: 0,
       fastestClickerInterval: 0,
-      prestigeCost: 50000,
-      prestigeExponent: 1.15,
     };
   },
   components: {
@@ -21,33 +60,19 @@ export default {
     UnitStore,
   },
   methods: {
-    incrementCount() {
-      this.state.count += this.state.multiplier;
-    },
     format(n: number): String {
       return formatNumber(n)
-    },
-    prestige() {
-      this.state.count = 0;
-      this.state.autoClicker = 0;
-      this.state.fasterClicker = 0;
-      this.state.fastestClicker = 0;
-      state.prestigeNumber++;
-      this.state.multiplier = state.prestigeNumber;
-      state.multiplierExponent = Math.max(state.multiplierExponent * 0.95, 1.01);
-      this.prestigeCost = Math.ceil(this.prestigeCost * this.prestigeExponent);
-      this.state.souls++;
     },
   },
   mounted() {
     this.autoClickerInterval = setInterval(() => {
-      this.state.count += this.state.autoClicker * this.state.autoClickerMultiplier;
+      this.autoClickIncrement();
     }, 1000);
     this.fasterClickerInterval = setInterval(() => {
-      this.state.count += this.state.fasterClicker * this.state.fasterClickerMultiplier;
+      this.fasterClickIncrement();
     }, 100);
     this.fastestClickerInterval = setInterval(() => {
-      this.state.count += this.state.fastestClicker * this.state.fastestClickerMultiplier;
+      this.fastestClickIncrement();
     }, 10);
   },
   beforeUnmount() {
@@ -62,33 +87,36 @@ export default {
 <template>
   <div>
     <h2>
-      <button class="baseButton mainButton" @click="incrementCount" data-test-id="mainButton">
-        Click here
+      <button class="baseButton mainButton" @click="clickIncrement" data-test-id="mainButton">
+        Click This Here
       </button>
-      <span class="totalCount">{{ format(state.count) }}</span>
-      <span class="souls" v-if="state.prestigeNumber > 1">souls: {{ format(state.souls) }}</span>
+      <span class="totalCount">{{ format(count) }}</span>
+      <span class="souls" v-if="prestigeNumber > 1">souls: {{ format(souls) }}</span>
     </h2>
     <div>
-      <span class="clicker" data-test-id="autoClickerCount">Autoclickers: {{ state.autoClicker }}</span>
-      <span data-test-id="autoClickerMultiplier" v-if="state.autoClickerMultiplier > 1"> x {{ state.autoClickerMultiplier}}</span>
+      <span class="clicker" data-test-id="autoClickerCount">Autoclickers: {{ autoClickers }}</span>
+      <span data-test-id="autoClickerMultiplier" v-if="autoClickerMultiplier > 1"> x {{ autoClickerMultiplier}}</span>
     </div>
     <div>
-      <span class="clicker" data-test-id="fasterClickerCount">Faster clickers: {{ state.fasterClicker }}</span>
-      <span data-test-id="fasterClickerMultiplier" v-if="state.fasterClickerMultiplier > 1"> x {{ state.fasterClickerMultiplier }}</span>
+      <span class="clicker" data-test-id="fasterClickerCount">Faster clickers: {{ fasterClickers }}</span>
+      <span data-test-id="fasterClickerMultiplier" v-if="fasterClickerMultiplier > 1"> x {{ fasterClickerMultiplier }}</span>
     </div>
     <div>
-      <span class="clicker" data-test-id="fastestClickerCount">Fastest clickers: {{ state.fastestClicker }}</span>
-      <span data-test-id="fastestClickerMultiplier" v-if="state.fastestClickerMultiplier > 1"> x {{ state.fastestClickerMultiplier }}</span>
+      <span class="clicker" data-test-id="fastestClickerCount">Fastest clickers: {{ fastestClickers }}</span>
+      <span data-test-id="fastestClickerMultiplier" v-if="fastestClickerMultiplier > 1"> x {{ fastestClickerMultiplier }}</span>
     </div>
     <div>
-      <span class="clicker" data-test-id="clickMultiplierCount">Click Multiplier: {{ state.multiplier }}</span>
+      <span class="clicker" data-test-id="clickMultiplierCount">Click Multiplier: {{ multiplier }}</span>
     </div>
-    <div v-if="state.prestigeNumber > 1">
+    <div v-if="prestigeNumber > 1">
       Prestige Cost: {{ format(prestigeCost) }}
     </div>
-    <div v-if="state.count > prestigeCost">
-      <button class="baseButton mainButton" @click="prestige">PRESTIGE</button>
+    <div v-if="count > prestigeCost">
+      <button class="baseButton mainButton" @click="thisPrestige">PRESTIGE</button>
     </div>
+    <button class="baseButton redButton" @click="hardReset" data-test-id="hardReset">
+      HARD RESET
+    </button>
   </div>
 </template>
 
@@ -124,7 +152,10 @@ h1 {
   padding: 1rem;
   margin: 1rem;
 }
-/* .mainButton { } */
+
+.redButton {
+  background-color: red;
+}
 
 .upgradeButton {
   background-color: #f6f21e;
