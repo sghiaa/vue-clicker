@@ -16,10 +16,10 @@ export default {
       main.incrementCount(main.getAutoClicker * main.getAutoClickerMultiplier);
     };
     const fasterClickIncrement = () => {
-      main.incrementCount(main.getAutoClicker * main.getAutoClickerMultiplier);
+      main.incrementCount(main.getFasterClicker * main.getFasterClickerMultiplier);
     };
     const fastestClickIncrement = () => {
-      main.incrementCount(main.getAutoClicker * main.getAutoClickerMultiplier);
+      main.incrementCount(main.getFastestClicker * main.getFastestClickerMultiplier);
     };
     const thisPrestige = () => {
       main.prestige();
